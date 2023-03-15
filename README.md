@@ -1,22 +1,39 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+﻿# .NET MVC (Model - View - Controller) web app connected to Microsoft Graph
 
-![demo](.\assets\ms-graph-tiles-demo.gif)
+This is a template for .NET Core MVC (Model - View - Controller) web app that connects to Microsoft Graph.
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+# Introduction
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+**Application name** : Microsoft 365 Tiles
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+The application provides different Microsoft 365 tiles and charts based on the Microsofrt Graph API for the currently logged in user. Application has been built using .Net 7.0 MVC and with Microsoft Graph API SDK Version **4.2.0**
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+The application has the following main features
+
+* > **Charts**
+    1. Messages stats
+    2. Chat stas
+    3. Files stats
+    4. Tasks stats
+* > **Tiles**
+    1. Recent documents
+    2. Viewed and modified
+    3. OneDrive items
+    4. Notebooks
+    5. Upcoming events
+    6. Followed sites
+    7. Contacts
+    8. Colleagues around
+    9. Recent tasks
+    10. Joined Teams
+    11. Teams stats
+
+
+# Screenshots
+
+![screenshot-charts](.\Assets\screenshot-charts.png)
+![screenshot-tiles](.\Assets\screenshot-tiles.png)
+
+## Minimal Path to Awesome 🚀
+
+It's coming soon.
