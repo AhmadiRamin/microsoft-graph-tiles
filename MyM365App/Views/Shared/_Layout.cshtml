@@ -1,0 +1,494 @@
+﻿@using System.Security.Principal
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - My Microsoft 365</title>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.22.5/antd.min.css" rel="stylesheet" />
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+</head>
+<body>
+	<!--
+	<script type="module" src="https://unpkg.com/%40fluentui/web-components"></script>
+	<script type="module" src="https://unpkg.com/%40microsoft/fast-components"></script>
+	<script type="module" src="https://unpkg.com/%40microsoft/fast-components-styles-msft"></script>
+	-->
+	<script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+	<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.3.3/react-router-dom.min.js"
+			integrity="sha512-5+YHw5ITeKnocFNB9CLQVO2xnjPLKcOq+zeoWawo6etfIWPL1Ulc3MgCNsSOkRaqkDiV4jeZcj1qa3pWOEsRXw=="
+			crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.18.12/babel.min.js"></script>
+
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/ant-design-icons/4.7.0/index.umd.min.js'
+			type='text/javascript'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/antd/4.22.5/antd.min.js' type='text/javascript'></script>
+	<script src="https://unpkg.com/%40microsoft/mgt@2/dist/bundle/mgt-loader.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <div id='root' class='container'>
+    </div>
+
+	<script>
+		const provider = new mgt.ProxyProvider("/api/Proxy");
+		provider.login = () => window.location.href = '@Url.Action("SignIn", "Account")';
+		provider.logout = () => window.location.href = '@Url.Action("SignOut", "Account")';
+		mgt.Providers.globalProvider = provider;
+	</script>
+
+	<script type="text/babel">
+
+		function buildStorageKey(key: string) {
+		  const prefix = 'my365app';
+		  return `${prefix}_${key}`.replace(/[^a-zA-Z0-9]/g, '.');
+		}
+
+		function storeDataByKey(key: string, dataToStore: any, expireMinutes: number, useLocalStorage?: boolean) {
+			if (window.sessionStorage || (window.localStorage && useLocalStorage)) {
+				const newKey: string = buildStorageKey(key);
+				const nowDt = new Date();
+				const expiryTime = nowDt.setMinutes(nowDt.getMinutes() + expireMinutes);
+				const data: any = { data: dataToStore, expiryTime };
+				if (useLocalStorage) {
+					try {
+						window.localStorage.setItem(newKey, JSON.stringify(data));
+					}
+					catch (e) {
+						if (e.code === 22) {
+							// Storage full, maybe notify user or do some clean-up
+						}
+					}
+				} else {
+					try {
+						window.sessionStorage.setItem(newKey, JSON.stringify(data));
+					}
+					catch (e) {
+						if (e.code === 22) {
+							// Storage full, maybe notify user or do some clean-up
+						}
+					}
+				}
+			}
+		}
+
+		function getStoredDataByKey(key: string, useLocalStorage?: boolean) {
+			let returnData: any = null;
+			if (window.sessionStorage || (window.localStorage && useLocalStorage)) {
+				const newKey: string = buildStorageKey(key);
+				const localCache: any = useLocalStorage ? window.localStorage.getItem(newKey) : window.sessionStorage.getItem(newKey);
+				if (localCache !== null) {
+					const nowDt = new Date();
+					const cachedData = JSON.parse(localCache);
+					if (cachedData.expiryTime > nowDt) {
+						returnData = cachedData.data;
+					}
+				}
+			}
+
+			return returnData;
+		}
+	</script>
+
+    <script type="text/babel">
+		const { BrowserRouter, Route } = window['ReactRouterDOM'];
+		const { Link, useHistory } = window['ReactRouterDOM'];
+		const { Progress, Breadcrumb, Layout, Popover, List, Avatar, PageHeader, Row, Col, Statistic, Card, Descriptions,Table,Skeleton, Badge } = window['antd'];
+		const { Header, Content, Footer } = Layout;
+		const { HomeOutlined, SettingOutlined, EditOutlined, EllipsisOutlined } = window.icons;
+		export interface IDashboardProps {
+
+		}
+		const Dashboard: React.FC<IDashboardProps> = (props) => {
+			let history = useHistory();
+			
+			const [recentDocuments, setRecentDocuments] = React.useState([]);
+			const [usedDocuments, setUsedDocuments] = React.useState([]);
+			const [oneDriveItems, setOneDriveItems] = React.useState([]);
+			const [notebooks, setNoteBooks] = React.useState([]);
+
+			const [openUserPopUp, setUserPopUp] = React.useState(false);
+			const [messagesDataLoading, setMessagesDataLoading] = React.useState(true);
+			const [chatsDataLoading,setChatsDataLoading] = React.useState(true);
+			const [tasksDataLoading, setTasksDataLoading] = React.useState(true);
+			const [filesDataLoading, setFilesDataLoading] = React.useState(true);
+			const [teamsData, setTeamsData] = React.useState(null);
+			const [lastChat,setLastChat] = React.useState(null);
+			const [contacts,setContacts] = React.useState([]);
+			const [events, setEvents] = React.useState([]);
+			const [sites, setSites] = React.useState([]);
+			const [people, setPeople] = React.useState([]);
+			const [tasks, setTasks] = React.useState([]);
+			const [teams, setTeams] = React.useState([]);
+
+			const signOut = <a href="/MicrosoftIdentity/Account/SignOut">Sign out</a>;
+			const hide = () => {
+				setUserPopUp(false);
+			};
+
+			const handleOpenChange = (newOpen: boolean) => {
+				setUserPopUp(newOpen);
+			};
+
+			const buildMessagesData = (data) => {
+				return [
+					{
+						name: 'Read',
+						value: data.totalReadMessagesCount
+					},
+					{
+						name: 'Unread',
+						value: data.totalUnreadMessagesCount
+					},
+					{
+						name: 'Sent',
+						value: data.totalSentMessagesCount
+					},
+					{
+						name: 'Received',
+						value: data.totalReceivedMessagesCount
+					},
+					{
+						name: 'Draft',
+						value: data.totalDraftMessagesCount
+					}
+				];
+			};
+			const loadData = (endpoint, cacheKey, setter) => {
+				const dataCacheKey = `@ViewData["UserEmail"]_${cacheKey}`;
+				const cachedData = getStoredDataByKey(dataCacheKey);
+				if(cachedData != null){
+					setter(cachedData);
+				}
+				else {
+					axios.get(endpoint)
+					.then(function (response) {
+						storeDataByKey(dataCacheKey, response.data, 120)
+						setter(response.data);
+					});
+				}
+			};
+
+			React.useEffect(() => {
+				loadData('/api/teams/GetTeams','teams',setTeams);
+				loadData('/api/tasks/GetTasks','tasks',setTasks);
+				loadData('/api/people/GetColleagues','people',setPeople);
+				loadData('/api/sites/GetSites','sites',setSites);
+				loadData('/api/events/GetEvents','events',setEvents);
+				loadData('/api/contacts/GetContacts','contacts',setContacts);
+				loadData('/api/documents/GetRecentDocuments','recentDocuments',setRecentDocuments);
+				loadData('/api/documents/GetUsedDocuments','usedDocuments',setUsedDocuments);
+				loadData('/api/documents/GetOneDriveItems','oneDriveItems',setOneDriveItems);
+				loadData('/api/Notebooks/GetNoteBooks','notebookItems',setNoteBooks);
+				loadData('/api/teams/GetStats','teamsStats',setTeamsData);
+			}, []);
+
+			React.useEffect(() => {
+				const dataCacheKey = '@ViewData["UserEmail"]_fileStats';
+				const cachedData = getStoredDataByKey(dataCacheKey);
+				if(cachedData != null){
+					renderFilesChart(cachedData);
+					setFilesDataLoading(false);
+				}
+				else {
+					axios.get('/api/documents/GetFileStats')
+					.then(function (response) {
+						storeDataByKey(dataCacheKey, response.data, 120)
+						renderFilesChart(response.data);
+						setFilesDataLoading(false);
+					});
+				}
+			}, []);
+
+			React.useEffect(() => {
+				const dataCacheKey = '@ViewData["UserEmail"]_chatsStats';
+				const cachedData = getStoredDataByKey(dataCacheKey);
+				if(cachedData != null){
+					renderChatChart(cachedData);
+					setLastChat(cachedData.myLastChat);
+					setChatsDataLoading(false);
+				}
+				else {
+					axios.get('/api/chats/getstats')
+					.then(function (response) {
+						
+						storeDataByKey(dataCacheKey, response.data, 120)
+						renderChatChart(response.data);
+						setLastChat(response.data.myLastChat);
+						setChatsDataLoading(false);
+					});
+				}
+			}, []);
+
+			React.useEffect(() => {
+				const dataCacheKey = '@ViewData["UserEmail"]_tasksStats';
+				const cachedData = getStoredDataByKey(dataCacheKey);
+				if(cachedData != null){
+					renderTasksChart(cachedData);
+					setTasksDataLoading(false);
+				}
+				else {
+					axios.get('/api/tasks/GetTaskStats')
+					.then(function (response) {
+
+						storeDataByKey(dataCacheKey, response.data, 120)
+						renderTasksChart(response.data);
+						setTasksDataLoading(false);
+					});
+				}
+			}, []);
+
+			React.useEffect(() => {
+				const dataCacheKey = '@ViewData["UserEmail"]_messagesChartData';
+				const cachedData = getStoredDataByKey(dataCacheKey);
+				if(cachedData != null){
+					const messagesData = buildMessagesData(cachedData);
+					renderMessagesChart(messagesData);
+					setMessagesDataLoading(false);
+				}
+				else {
+					axios.get('/api/messages/getstats?userEmail=@ViewData["UserEmail"]')
+					.then(function (response) {
+						storeDataByKey(dataCacheKey, response.data, 120)
+						const messagesData = buildMessagesData(response.data);
+						renderMessagesChart(messagesData);
+						setMessagesDataLoading(false);
+					});
+				}
+		 },[]);
+
+			return (
+				<Layout className="layout">
+					<Header>
+						<h1 style={{float:'left'}}>Microsoft 365 Tiles</h1>
+						<div className="userMenu">
+							@if (User.Identity?.IsAuthenticated == true)
+							{
+								<Popover title="" trigger="click" open={openUserPopUp} onOpenChange={setUserPopUp} content={signOut}>
+									<img src='data:image/png;base64,@ViewData["ProfilePhoto"]' class="userPhoto" />
+									<span class="navbar-text text-dark">@ViewData["DisplayName"]</span>
+								</Popover>
+							}
+							else
+							{
+								<a className="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Sign in</a>
+							}
+						</div>
+						
+					</Header>
+					<Content style={{ padding: '0 50px' }}>				  
+						
+						<div className="site-layout-content">
+							@RenderBody()
+						</div>
+					</Content>
+					
+				</Layout>
+			);
+		}
+
+		const App = () => (
+			<ReactRouterDOM.HashRouter>
+				<Route path="/" exact component={Dashboard} />
+			</ReactRouterDOM.HashRouter>
+		);
+
+		ReactDOM.render(
+			<App />,
+			document.getElementById('root')
+		);
+
+    </script>
+
+	<script type="text/babel">
+		
+		const renderFilesChart = (data) => {
+			var chartDom = document.getElementById('filesChart');
+			var myChart = echarts.init(chartDom);
+			var option;
+			
+			option = {
+					color: [
+						'#b800a7'
+					],
+					tooltip: {
+						trigger: 'axis',
+						axisPointer: {
+							// Use axis to trigger tooltip
+							type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+						}
+					},
+					legend: {
+						left: 'left',
+					},
+					grid: {
+						left: '3%',
+						right: '4%',
+						bottom: '3%',
+						containLabel: true
+					},
+					xAxis: {
+						type: 'category',
+						data: ['Folders', 'Images', 'Office documents', 'Others']
+					},
+					yAxis: {
+						type: 'value'
+					},
+					series: [
+						{
+							name: 'Total number of files by type',
+							type: 'bar',
+							stack: 'total',
+							label: {
+								show: true
+							},
+							emphasis: {
+								focus: 'series'
+							},
+							data: [data.totalFoldersCount , data.totalImagesCount , data.totalOfficeDocumentsCount , data.totalOthersCount]
+						}
+					]
+				};
+
+			option && myChart.setOption(option);
+		}
+	</script>
+	
+	<script type="text/babel">
+		
+		const renderTasksChart = (data) => {
+			var chartDom = document.getElementById('tasksChart');
+			var myChart = echarts.init(chartDom);
+			var option;
+			
+		option = {
+		  tooltip: {
+			trigger: 'item'
+		  },
+		  legend: {
+			top: '2%',
+			orient: 'vertical',
+			left: 'left',
+			// doesn't perfectly work with our tricks, disable it
+			selectedMode: false
+		  },
+		  series: [
+			{
+			  name: 'Tasks',
+			  type: 'pie',
+			  radius: ['40%', '70%'],
+			  center: ['60%', '55%'],
+			  // adjust the start angle
+			  startAngle: 180,
+			  label: {
+				show: true,
+				formatter(param) {
+				  // correct the percentage
+				  return param.name + ' (' + param.percent * 2 + '%)';
+				}
+			  },
+			  data: [
+				{ value: data.totalCompletedTasksCount, name: 'Not started' },
+				{ value: data.totalCompletedTasksCount, name: 'Completed' },
+				{ value: data.totalInprogressTasksCount, name: 'In progress' }
+			  ]
+			}
+		  ]
+		};
+			option && myChart.setOption(option);
+		}
+	</script>
+	
+	<script type="text/babel">
+		
+		const renderMessagesChart = (data) => {
+			var chartDom = document.getElementById('messagesChart');
+			var myChart = echarts.init(chartDom);
+			var option;
+			option = {
+				color: [
+					'#91CC75',
+					'#ff0000',
+					'#3333ff',
+					'#f24973',
+					'#33cccc'
+				],
+				tooltip: {
+					trigger: 'item'
+				},
+				legend: {
+					orient: 'vertical',
+					left: 'left'
+				},
+				series: [
+					{
+						name: 'Messages',
+						type: 'pie',
+						radius: '80%',
+						data: data,
+						emphasis: {
+							itemStyle: {
+								shadowBlur: 10,
+								shadowOffsetX: 0,
+								shadowColor: 'rgba(0, 0, 0, 0.5)'
+							}
+						}
+					}
+				]
+			};
+			option && myChart.setOption(option);
+		}
+	</script>
+
+	<script type="text/babel">
+		const renderChatChart = (data) => {
+			var chartDom = document.getElementById("chatsChart");
+				var myChart = echarts.init(chartDom);
+				var option;
+				option = {
+					color: [
+						'#ff0000'
+					],
+					tooltip: {
+						trigger: 'axis',
+						axisPointer: {
+							// Use axis to trigger tooltip
+							type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
+						}
+					},
+					legend: {left: 'left'},
+					grid: {
+						left: '3%',
+						right: '4%',
+						bottom: '3%',
+						containLabel: true
+					},
+					xAxis: {
+						type: 'category',
+						data: ['Group','Meeting','One on One']
+					},
+					yAxis: {
+						type: 'value'
+					},
+					series: [
+						{
+							name: 'Total number of chats by type',
+							type: 'bar',
+							stack: 'total',
+							label: {
+								show: true
+							},
+							emphasis: {
+								focus: 'series'
+							},
+							data: [data.totalGroupChatsCount,data.totalMeetingChatsCount,data.totalOneOnOneChatsCount]
+						}
+					]
+				};
+				option && myChart.setOption(option);				
+		}
+	</script>
+</body>
+</html>

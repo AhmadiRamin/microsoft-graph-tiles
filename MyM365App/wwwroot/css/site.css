@@ -1,0 +1,162 @@
+
+/*Top navigation*/
+.UserInfo {
+    cursor: pointer;
+}
+
+.ant-layout-header h1 {
+    color: white;
+    width: 30%;
+}
+
+[data-theme="dark"] .site-layout-content {
+    background: #141414;
+}
+
+.menu {
+    background-color: #001529;
+    padding-top: 10px;
+    color: white;
+}
+
+.ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left {
+    border-right: 0px !important;
+}
+
+    .ant-menu-inline.ant-menu-root .ant-menu-item, .ant-menu-inline.ant-menu-root .ant-menu-submenu-title {
+        padding-left: 5px !important;
+    }
+
+.userPhoto {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.userMenu {
+    color: white;
+    float: right;
+    cursor: pointer;
+}
+.userMenu a {
+    color: white;
+}
+
+
+fast-anchored-region {
+    display: none;
+}
+
+.ant-layout-content {
+    background: #fff;
+}
+
+.site-layout-content {
+    margin: 10px 0;
+    background: #fff;
+}
+/*Header styles*/
+.ant-layout-header { 
+    background: #ED254E;
+}
+
+/*Page header styles*/
+.site-page-header .ant-page-header-heading-title {
+    color: #043777;
+}
+/*Card Styles*/
+.card-wrapper {
+    background-color: #fff;
+    border-radius: 6px 6px 0 0;
+    padding: 16px 12px;
+    color: rgba(0, 0, 0, 0.88);
+    border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.card-container {
+    max-width: 315px;
+    margin: 0 7px;
+}
+
+.card-container .ant-card-chart {
+    width: 630px;
+    max-width: 630px;
+    height: 350px;
+    /*background: #eee;*/
+    color: #3a3a3a;
+    margin-bottom: 8px;
+    text-decoration: none;
+}
+
+.card-container .ant-card {
+    width: 315px;
+    height: 350px;
+    /*background: #eee;*/
+    color: #3a3a3a;
+    margin-bottom: 8px;
+    text-decoration: none;
+}
+
+.card-container .ant-card .ant-card-head .ant-card-head-title {
+    color: #043777;
+}
+.card-container .ant-card .ant-card-head {
+    background: #edebe9;
+}
+.card-container .ant-card .ant-card-body {
+    padding: 20px;
+}
+
+
+/* List Items Styles*/
+.ant-list-items {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 250px;
+}
+.ant-list-items .ant-list-item {    
+    padding: 8px 0;    
+}
+.ant-list-items .ant-avatar {
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    border-radius: 0;
+}
+.ant-list-item-meta-title {
+    font-size: 13px;
+}
+.ant-list-item-meta-description {
+    font-size: 12px;
+}
+.ant-statistic {
+    text-align: center;
+    background: #f7fef5;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+/* Two column layout */
+.two-columns {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+    /* columns */
+    .two-columns > * {
+        width: 100%;
+        padding: 1rem;
+    }
+
+/* tablet breakpoint */
+@media (min-width:768px) {
+    .two-columns > * {
+        width: 50%;
+    }
+}

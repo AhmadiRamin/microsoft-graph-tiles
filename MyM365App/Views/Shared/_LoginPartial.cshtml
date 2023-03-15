@@ -1,0 +1,17 @@
+﻿@using System.Security.Principal
+
+
+<div className="userMenu">
+	@if (User.Identity?.IsAuthenticated == true)
+	{
+		<Popover title="" trigger="click" open={openUserPopUp} onOpenChange={setUserPopUp} content={signOut}>
+		<img src='data:image/png;base64,@ViewData["ProfilePhoto"]' class="userPhoto" />
+		<span class="navbar-text text-dark">@ViewData["DisplayName"]</span>
+		</Popover>
+	}
+	else
+	{
+		<a className="nav-link text-dark" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Sign in</a>
+	}
+		
+</div>
