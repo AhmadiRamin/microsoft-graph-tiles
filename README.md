@@ -36,7 +36,10 @@ The application has the following main features
 
 # Screenshots
 
+### Charts
 ![screenshot-charts](./Assets/screenshot-charts.png)
+
+### Tiles
 ![screenshot-tiles](./Assets/screenshot-tiles.png)
 
 ## Minimal Path to Awesome 🚀
