@@ -65,6 +65,64 @@ fast-anchored-region {
 .site-page-header .ant-page-header-heading-title {
     color: #043777;
 }
+.ant-page-header {   
+    padding: 16px 0px;    
+}
+
+/*Tabs*/
+.tab-container {
+    padding: 30px;
+    background: #ececec;
+}
+    .tab-container .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+        color: #ED254E;
+    }
+    .tab-container > .ant-tabs-card .ant-tabs-content {
+        height: 120px;
+        margin-top: -16px;
+    }
+    .tab-container > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
+            padding: 16px;
+            background: #fff;
+        }
+    .tab-container > .ant-tabs-card > .ant-tabs-nav::before {
+        display: none;
+    }
+    .tab-container > .ant-tabs-card .ant-tabs-tab,
+    [data-theme='compact'] .tab-container > .ant-tabs-card .ant-tabs-tab {
+        background: transparent;
+        border-color: transparent;
+    }
+    .tab-container > .ant-tabs-card .ant-tabs-tab-active,
+    [data-theme='compact'] .tab-container > .ant-tabs-card .ant-tabs-tab-active {
+        background: #fff;
+        border-color: #fff;
+    }
+    #components-tabs-demo-card-top .code-box-demo {
+    padding: 24px;
+    overflow: hidden;
+    background: #f5f5f5;
+}
+    [data-theme='compact'] .card-container > .ant-tabs-card .ant-tabs-content {
+    height: 120px;
+    margin-top: -8px;
+}
+    [data-theme='dark'] .card-container > .ant-tabs-card .ant-tabs-tab {
+    background: transparent;
+    border-color: transparent;
+}
+    [data-theme='dark'] #components-tabs-demo-card-top .code-box-demo {
+    background: #000;
+}
+    [data-theme='dark'] .card-container > .ant-tabs-card .ant-tabs-content > .ant-tabs-tabpane {
+    background: #141414;
+}
+    [data-theme='dark'] .card-container > .ant-tabs-card .ant-tabs-tab-active {
+    background: #141414;
+    border-color: #141414;
+}
+
+
 /*Card Styles*/
 .card-wrapper {
     background-color: #fff;
@@ -81,7 +139,7 @@ fast-anchored-region {
 }
 
 .card-container {
-    max-width: 315px;
+    max-width: 300px;
     margin: 0 7px;
 }
 
@@ -142,6 +200,16 @@ fast-anchored-region {
     padding: 10px;
     margin-bottom: 15px;
 }
+
+
+element.style {
+}
+
+.ant-statistic-content { 
+    font-size: 30px;
+    font-weight: 600; 
+}
+
 /* Two column layout */
 .two-columns {
     display: flex;
@@ -153,6 +221,9 @@ fast-anchored-region {
         width: 100%;
         padding: 1rem;
     }
+
+
+
 
 /* tablet breakpoint */
 @media (min-width:768px) {

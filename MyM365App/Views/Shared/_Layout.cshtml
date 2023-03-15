@@ -95,12 +95,14 @@
     <script type="text/babel">
 		const { BrowserRouter, Route } = window['ReactRouterDOM'];
 		const { Link, useHistory } = window['ReactRouterDOM'];
-		const { Progress, Breadcrumb, Layout, Popover, List, Avatar, PageHeader, Row, Col, Statistic, Card, Descriptions,Table,Skeleton, Badge } = window['antd'];
+		const { Tabs, TabsProps, Progress, Breadcrumb, Layout, Popover, List, Avatar, PageHeader, Row, Col, Statistic, Card, Descriptions,Table,Skeleton, Badge } = window['antd'];
 		const { Header, Content, Footer } = Layout;
-		const { HomeOutlined, SettingOutlined, EditOutlined, EllipsisOutlined } = window.icons;
+		const { BarChartOutlined,IdcardOutlined, HomeOutlined, SettingOutlined, EditOutlined, EllipsisOutlined } = window.icons;
 		export interface IDashboardProps {
 
 		}
+
+
 		const Dashboard: React.FC<IDashboardProps> = (props) => {
 			let history = useHistory();
 			
@@ -122,6 +124,21 @@
 			const [people, setPeople] = React.useState([]);
 			const [tasks, setTasks] = React.useState([]);
 			const [teams, setTeams] = React.useState([]);
+
+
+			const items: TabsProps['items'] = [
+			  {
+				key: '1',
+				label: `Tab 1`,
+				children: `Content of Tab Pane 1`,
+			  },
+			  {
+				key: '2',
+				label: `Tab 2`,
+				children: `Content of Tab Pane 3`,
+			  }		 
+			];
+
 
 			const signOut = <a href="/MicrosoftIdentity/Account/SignOut">Sign out</a>;
 			const hide = () => {

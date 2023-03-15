@@ -6,84 +6,93 @@
     ViewData["Title"] = "Home Page";
 }
 
+
+
 <PageHeader className="site-page-header"
             title="Dashboard"
             subTitle=" This dashboard provides different Microsoft 365 tiles based on Microsofrt Graph API for the currently logged in user." />
 
-<div class="two-columns">
-    <div>
-        <Card hoverable title="Messages stats" extra={<img width="25" src="img/chatmessages.svg" />} >
+<div class="tab-container">
+    <div class="ant-card">
+    <Tabs type="card" defaultActiveKey="1">
+        <Tabs.TabPane tab="Charts" key="1">
+        <div class="two-columns">
+            <div>
+                <Card hoverable title="Messages stats" extra={<img width="25" src="img/chatmessages.svg" />} >
              {
                  messagesDataLoading && <Skeleton />
              }
             <div id="messagesChart" style={{ width: "100%" , height: "250px" }}></div>
         </Card>
-    </div>
-    <div>
-        <Card class="ant-card-chart" hoverable title="Chats stats" extra={<img width="25" src="img/chatstats.svg" />} >
+            </div>
+            <div>
+                <Card class="ant-card-chart" hoverable title="Chats stats" extra={<img width="25" src="img/chatstats.svg" />} >
              {
                 chatsDataLoading && <Skeleton />
              }
             <div id="chatsChart" style={{ width: "100%" , height: "250px" }}></div>
         </Card>
-    </div>
-</div>
+            </div>
+        </div>
 
-<div class="two-columns">
-    <div>
-        <Card hoverable title="Files stats" extra={<img width="25" src="img/taskstile.svg" />} >
+        <div class="two-columns">
+            <div>
+                <Card hoverable title="Files stats" extra={<img width="25" src="img/document.svg" />} >
              {
                  filesDataLoading && <Skeleton />
              }
             <div id="filesChart" style={{ width: "100%" , height: "250px" }}></div>
         </Card>
-    </div>
-    <div>
-        <Card hoverable title="Tasks stats" extra={<img width="25" src="img/taskstile.svg" />} >
+            </div>
+            <div>
+                <Card hoverable title="Tasks stats" extra={<img width="25" src="img/taskstile.svg" />} >
              {
                  tasksDataLoading && <Skeleton />
              }
             <div id="tasksChart" style={{ width: "100%" , height: "250px" }}></div>
         </Card>
-    </div>
-</div>
+            </div>
+        </div>
+    </Tabs.TabPane>
+    <Tabs.TabPane tab="Tiles" key="2">
 
-<div class="card-wrapper">
-    @*Recent documents card*@
-    <div class="card-container">
-        <Card hoverable title="Recent documents" extra={<img width="25" src="img/recentdocuments.svg" />} >
+
+        <div class="card-wrapper">
+            @*Recent documents card*@
+            <div class="card-container">
+                <Card hoverable title="Recent documents" extra={<img width="25" src="img/recentdocuments.svg" />} >
      <ul class="ant-list-items">
 
          {
               recentDocuments.length === 0 && <Skeleton />
          }
-                {
+        {
 
-                    recentDocuments.length > 0 && recentDocuments.map(doc => {
-                        return (
-                            <li className="ant-list-item">
-                                <div className="ant-list-item-meta">
-                                    <div className="ant-list-item-meta-avatar">
-                                        <span className="ant-avatar ant-avatar-image css-1me4733">
-                                        <img src={doc.icon}/>
-                                        </span>
-                                    </div>
-                                    <div className="ant-list-item-meta-content">
-                                            <h4 className="ant-list-item-meta-title"><a href={doc.url} target="_blank" >{doc.title}</a></h4>
-                                    </div>
-                                </div>
-                            </li>
-                        );
-                    })
-                }
+            recentDocuments.length > 0 && recentDocuments.map(doc => {
+                return (
+                    <li className="ant-list-item">
+                        <div className="ant-list-item-meta">
+                            <div className="ant-list-item-meta-avatar">
+                                <span className="ant-avatar ant-avatar-image css-1me4733">
+                                <img src={doc.icon}/>
+                                </span>
+                            </div>
+                            <div className="ant-list-item-meta-content">
+                                    <h4 className="ant-list-item-meta-title"><a href={doc.url} target="_blank" >{doc.title}</a></h4>
+                            </div>
+                        </div>
+                    </li>
+                );
+            })
+        }
 
 
             </ul>
     </Card>
-    </div>
-    @*Viewed and modified card*@
-    <div class="card-container">
-        <Card hoverable title="Viewed and modified" extra={<img width="25" src="img/viewedandmodified.svg" />} >
+            </div>
+            @*Viewed and modified card*@
+            <div class="card-container">
+                <Card hoverable title="Viewed and modified" extra={<img width="25" src="img/viewedandmodified.svg" />} >
         <ul class="ant-list-items">
             {
                 usedDocuments.length === 0 && <Skeleton />
@@ -113,11 +122,11 @@
         }
         </ul>
     </Card>
-    </div>
+            </div>
 
-    @*My OneDrive Items card*@
-    <div class="card-container">
-        <Card hoverable title="OneDrive items" extra={<img width="25" src="img/onedrivefolder.svg" />} >
+            @*My OneDrive Items card*@
+            <div class="card-container">
+                <Card hoverable title="OneDrive items" extra={<img width="25" src="img/onedrivefolder.svg" />} >
         <ul class="ant-list-items">
             {
                 oneDriveItems.length === 0 && <Skeleton />
@@ -145,11 +154,11 @@
             }
         </ul>
     </Card>
-    </div>
+            </div>
 
-    @*My Notebooks card*@
-    <div class="card-container">
-        <Card hoverable title="Notebooks" extra={<img width="25" src="img/notebook.svg" />} >
+            @*My Notebooks card*@
+            <div class="card-container">
+                <Card hoverable title="Notebooks" extra={<img width="25" src="img/notebook.svg" />} >
      <ul class="ant-list-items">
 
                  {
@@ -178,11 +187,11 @@
 
             </ul>
     </Card>
-    </div>
+            </div>
 
-    @*My events card*@
-    <div class="card-container">
-        <Card hoverable title="Events" extra={<img width="25" src="img/eventstile.svg" />} >
+            @*My events card*@
+            <div class="card-container">
+                <Card hoverable title="Events" extra={<img width="25" src="img/eventstile.svg" />} >
      <ul class="ant-list-items">
 
                  {
@@ -210,11 +219,11 @@
 
             </ul>
     </Card>
-    </div>
+            </div>
 
-     @*My sites card*@
-    <div class="card-container">
-        <Card hoverable title="Sites" extra={<img width="25" src="img/sitestile.svg" />} >
+            @*My sites card*@
+            <div class="card-container">
+                <Card hoverable title="Sites" extra={<img width="25" src="img/sitestile.svg" />} >
      <ul class="ant-list-items">
 
                  {
@@ -242,11 +251,11 @@
 
             </ul>
     </Card>
-    </div>
+            </div>
 
-    @*My contacts card*@
-    <div class="card-container">
-        <Card hoverable title="Contacts" extra={<img width="25" src="img/contactstile.svg" />} >
+            @*My contacts card*@
+            <div class="card-container">
+                <Card hoverable title="Contacts" extra={<img width="25" src="img/contactstile.svg" />} >
      <ul class="ant-list-items">
 
                  {
@@ -275,11 +284,11 @@
 
             </ul>
     </Card>
-    </div>
+            </div>
 
-    @*My people card*@
-    <div class="card-container">
-        <Card hoverable title="Colleagues" extra={<img width="25" src="img/colleaguestiles.svg" />} >
+            @*My people card*@
+            <div class="card-container">
+                <Card hoverable title="Colleagues" extra={<img width="25" src="img/colleaguestiles.svg" />} >
      <ul class="ant-list-items">
 
                  {
@@ -308,11 +317,11 @@
 
             </ul>
     </Card>
-    </div>
+            </div>
 
-    @*My tasks card*@
-    <div class="card-container">
-        <Card hoverable title="Tasks" extra={<img width="25" src="img/taskstile.svg" />} >
+            @*My tasks card*@
+            <div class="card-container">
+                <Card hoverable title="Tasks" extra={<img width="25" src="img/taskstile.svg" />} >
      <ul class="ant-list-items">
 
                  {
@@ -342,11 +351,11 @@
 
             </ul>
     </Card>
-    </div>
+            </div>
 
-    @*My teams card*@
-    <div class="card-container">
-        <Card hoverable title="Joined Teams" extra={<img width="25" src="img/teamstiles.svg" />} >
+            @*My teams card*@
+            <div class="card-container">
+                <Card hoverable title="Joined Teams" extra={<img width="25" src="img/teamstiles.svg" />} >
      <ul class="ant-list-items">
 
                  {
@@ -375,34 +384,40 @@
 
             </ul>
     </Card>
-    </div>
+            </div>
 
-    <div class="card-container">
-        <Card class="ant-card-chart" hoverable title="Teams" extra={<img width="25" src="img/teamstiles.svg" />} >
+            <div class="card-container">
+                <Card class="ant-card-chart" hoverable title="Teams" extra={<img width="25" src="img/teamstiles.svg" />} >
              {
                 !teamsData && <Skeleton />
              }
              {
                  teamsData &&
                  <>
-                 
+
                     <div>
                      <Statistic title="Installed Teams" value={teamsData.installedAppsCount} />
-                     <Statistic title="Joined Teams" value={teamsData.associatedTeamsCount} />                                         
-                    {
+                     <Statistic title="Joined Teams" value={teamsData.associatedTeamsCount} />
+                     {
                         lastChat &&
                         <div><b><a href={lastChat?.webUrl}>{lastChat?.members[0]?.displayName}</a></b> is the last person you chat with</div>
                     }
                     </div>
-                    
+
                  </>
              }
 
         </Card>
+            </div>
+
+        </div>
+
+
+
+    </Tabs.TabPane>  
+</Tabs>
     </div>
-
 </div>
-
 
 
 
