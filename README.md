@@ -31,8 +31,8 @@ The application has the following main features
 
 # Screenshots
 
-![screenshot-charts](.\Assets\screenshot-charts.png)
-![screenshot-tiles](.\Assets\screenshot-tiles.png)
+![screenshot-charts](./Asset/screenshot-charts.png)
+![screenshot-tiles](./Assets/screenshot-tiles.png)
 
 ## Minimal Path to Awesome 🚀
 
