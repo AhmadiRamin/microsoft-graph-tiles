@@ -65,9 +65,9 @@ Please follow the below steps to register your app in Azure AD: 
 
 * Open the project folder `MyM365App` with the editor of your choice. (Visual Studio 2022 is recommended.)
 * Open **appsettings.json** and update the following entries:
-  * Domain: your full domain name (e.x. contoso.onmicrosoft.com)
-  * TenantId: tenant Id
-  * ClientId: the app client Id
-  * ClientSecret: the client secret you created in previous steps
+  * **Domain**: your full domain name (e.x. contoso.onmicrosoft.com)
+  * **TenantId**: tenant Id
+  * **ClientId**: the app client Id
+  * **ClientSecret**: the client secret you created in previous steps
 * In Visual Studio, press F5 to run the app.
 * Login and enjoy!
