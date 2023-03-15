@@ -1,4 +1,6 @@
-﻿# .NET MVC (Model - View - Controller) web app connected to Microsoft Graph
+[![Hack Together: Microsoft Graph and .NET](https://img.shields.io/badge/Microsoft%20-Hack--Together-orange?style=for-the-badge&logo=microsoft)](https://github.com/microsoft/hack-together)
+
+ # .NET MVC (Model - View - Controller) web app connected to Microsoft Graph
 
 This is a template for .NET Core MVC (Model - View - Controller) web app that connects to Microsoft Graph.
 
@@ -28,6 +30,9 @@ The application has the following main features
     10. Joined Teams
     11. Teams stats
 
+# Demo
+
+![demo](./Assets/ms-graph-tiles-demo.gif)
 
 # Screenshots
 
