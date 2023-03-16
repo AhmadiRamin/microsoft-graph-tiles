@@ -30,11 +30,6 @@ The application has the following main features
     10. Joined Teams
     11. Teams stats
 
-## Frameworks
-
-![drop](https://img.shields.io/badge/.NET-7-green.svg)
-![drop](https://img.shields.io/badge/Graph%20.Net%20SDK-4.2.0-green)
-
 # Demo
 
 ![demo](./Assets/ms-graph-tiles-demo.gif)
