@@ -1,5 +1,5 @@
 [![Hack Together: Microsoft Graph and .NET](https://img.shields.io/badge/Microsoft%20-Hack--Together-orange?style=for-the-badge&logo=microsoft)](https://github.com/microsoft/hack-together)
-
+ [![dotnet 7.0](https://img.shields.io/badge/Microsoft-.NET%207.0-blueviolet?style=for-the-badge&logo=dotnet)](https://dotnet.microsoft.com/) [![Microsoft Graph](https://img.shields.io/badge/Microsoft-%20Graph-orangered?style=for-the-badge&logo=Microsoft%20Office)](https://graph.microsoft.com)
  # .NET MVC (Model - View - Controller) web app connected to Microsoft Graph
 
 This is a template for .NET Core MVC (Model - View - Controller) web app that connects to Microsoft Graph.
